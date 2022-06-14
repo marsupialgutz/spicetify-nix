@@ -113,7 +113,10 @@ pkgs.spotify-unwrapped.overrideAttrs (oldAttrs: rec {
       lyric_always_show ${boolToString lyricAlwaysShow } \
       lyric_force_no_sync ${boolToString lyricForceNoSync }
 
-    cd $out/share/spotify
-    ${customAppsFixupCommands}
+      find CustomApps/ -maxdepth 1 -type d -exec cp -r {} $out/share/spotify/Apps \;
+      ${spicetify} backup apply
+    
+      cd $out/share/spotify
+      ${customAppsFixupCommands}
   '';
 })
