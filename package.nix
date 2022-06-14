@@ -1,29 +1,28 @@
-{ 
-  pkgs ? import <nixpkgs> {},
-  theme ? "SpicetifyDefault",
-  colorScheme ? "",
-  thirdParyThemes ? {},
-  thirdParyExtensions ? {},
-  thirdParyCustomApps ? {},
-  enabledExtensions ? [],
-  enabledCustomApps ? [],
-  spotifyLaunchFlags ? "",
-  injectCss ? false,
-  replaceColors ? false,
-  overwriteAssets ? false,
-  disableSentry ? true,
-  disableUiLogging ? true,
-  removeRtlRule ? true,
-  exposeApis ? true,
-  disableUpgradeCheck ? true,
-  fastUserSwitching ? false,
-  visualizationHighFramerate ? false,
-  radio ? false,
-  songPage ? false,
-  experimentalFeatures ? false,
-  home ? false,
-  lyricAlwaysShow ? false,
-  lyricForceNoSync ? false
+{ pkgs ? import <nixpkgs> { }
+, theme ? "SpicetifyDefault"
+, colorScheme ? ""
+, thirdPartyThemes ? { }
+, thirdPartyExtensions ? { }
+, thirdPartyCustomApps ? { }
+, enabledExtensions ? [ ]
+, enabledCustomApps ? [ ]
+, spotifyLaunchFlags ? ""
+, injectCss ? false
+, replaceColors ? false
+, overwriteAssets ? false
+, disableSentry ? true
+, disableUiLogging ? true
+, removeRtlRule ? true
+, exposeApis ? true
+, disableUpgradeCheck ? true
+, fastUserSwitching ? false
+, visualizationHighFramerate ? false
+, radio ? false
+, songPage ? false
+, experimentalFeatures ? false
+, home ? false
+, lyricAlwaysShow ? false
+, lyricForceNoSync ? false
 }:
 
 let
@@ -37,30 +36,30 @@ let
   makeLnCommands = type: (mapAttrsToList (name: path: "ln -sf ${path} ./${type}/${name}"));
 
   # Setup spicetify
-  spicetifyPkg = pkgs.callPackage ./spicetify.nix {};
+  spicetifyPkg = pkgs.callPackage ./spicetify.nix { };
   spicetify = "SPICETIFY_CONFIG=. ${spicetifyPkg}/spicetify";
 
   themes = import ./themes-src.nix;
 
   # Dribblish is a theme which needs a couple extra settings
   isDribblish = theme == "Dribbblish";
-  
-  extraCommands = (if isDribblish then "cp ./Themes/Dribbblish/dribbblish.js ./Extensions \n" else "")
-    + (lineBreakConcat (makeLnCommands "Themes" thirdParyThemes))
-    + (lineBreakConcat (makeLnCommands "Extensions" thirdParyExtensions))
-    + (lineBreakConcat (makeLnCommands "CustomApps" thirdParyCustomApps));
 
-  customAppsFixupCommands = lineBreakConcat (makeLnCommands "Apps" thirdParyCustomApps);
-  
+  extraCommands = (if isDribblish then "cp ./Themes/Dribbblish/dribbblish.js ./Extensions \n" else "")
+    + (lineBreakConcat (makeLnCommands "Themes" thirdPartyThemes))
+    + (lineBreakConcat (makeLnCommands "Extensions" thirdPartyExtensions))
+    + (lineBreakConcat (makeLnCommands "CustomApps" thirdPartyCustomApps));
+
+  customAppsFixupCommands = lineBreakConcat (makeLnCommands "Apps" thirdPartyCustomApps);
+
   injectCssOrDribblish = boolToString (isDribblish || injectCss);
   replaceColorsOrDribblish = boolToString (isDribblish || replaceColors);
   overwriteAssetsOrDribblish = boolToString (isDribblish || overwriteAssets);
 
-  extensionString = pipeConcat ((if isDribblish then [ "dribbblish.js" ] else []) ++ enabledExtensions);
+  extensionString = pipeConcat ((if isDribblish then [ "dribbblish.js" ] else [ ]) ++ enabledExtensions);
   customAppsString = pipeConcat enabledCustomApps;
 in
 pkgs.spotify-unwrapped.overrideAttrs (oldAttrs: rec {
-  postInstall=''
+  postInstall = ''
     touch $out/prefs
     mkdir Themes
     mkdir Extensions

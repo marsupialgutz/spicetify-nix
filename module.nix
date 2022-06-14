@@ -1,8 +1,9 @@
 { lib, pkgs, config, ... }:
-with lib;                      
+with lib;
 let
   cfg = config.programs.spicetify;
-in {
+in
+{
   options.programs.spicetify = {
     enable = mkEnableOption "A modded Spotify";
     theme = mkOption {
@@ -13,25 +14,25 @@ in {
       type = types.str;
       default = "";
     };
-    thirdParyThemes = mkOption {
+    thirdPartyThemes = mkOption {
       type = types.attrs;
-      default = {};
+      default = { };
     };
-    thirdParyExtensions = mkOption {
+    thirdPartyExtensions = mkOption {
       type = types.attrs;
-      default = {};
+      default = { };
     };
-    thirdParyCustomApps = mkOption {
+    thirdPartyCustomApps = mkOption {
       type = types.attrs;
-      default = {};
+      default = { };
     };
     enabledExtensions = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
     };
     enabledCustomApps = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
     };
     spotifyLaunchFlags = mkOption {
       type = types.str;
@@ -107,12 +108,12 @@ in {
     home.packages = [
       (pkgs.callPackage ./package.nix {
         inherit pkgs;
-        inherit (cfg) 
+        inherit (cfg)
           theme
           colorScheme
-          thirdParyThemes
-          thirdParyExtensions
-          thirdParyCustomApps
+          thirdPartyThemes
+          thirdPartyExtensions
+          thirdPartyCustomApps
           enabledExtensions
           enabledCustomApps
           spotifyLaunchFlags
@@ -132,8 +133,9 @@ in {
           home
           lyricAlwaysShow
           lyricForceNoSync
-        ;
+          ;
       })
     ];
   };
 }
+

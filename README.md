@@ -27,7 +27,7 @@ home-manager.users.piet = {
     colorScheme = "horizon";
     enabledCustomApps = ["reddit"];
     enabledExtensions = ["newRelease.js" "autoVolume.js"];
-    thirdParyExtensions = {
+    thirdPartyExtensions = {
       "autoVolume.js" = "${av}/autoVolume.js";
     };
   };
@@ -52,13 +52,13 @@ pkgs.callPackage (import "${spicetify}/package.nix") {
   colorScheme = "horizon";
   enabledCustomApps = ["reddit"];
   enabledExtensions = ["newRelease.js" "autoVolume.js"];
-  thirdParyExtensions = {
+  thirdPartyExtensions = {
     "autoVolume.js" = "${av}/autoVolume.js";
   };
 }
 ```
 
-To add third-party themes, extensions or custom apps use `thirdParyThemes`, `thirdParyExtensions` or `thirdParyCustomApps`. These expect a set, where the key is the name of the new theme/extension and the value the path. Don't forget to enable it seperatly.
+To add third-party themes, extensions or custom apps use `thirdPartyThemes`, `thirdPartyExtensions` or `thirdPartyCustomApps`. These expect a set, where the key is the name of the new theme/extension and the value the path. Don't forget to enable it seperatly.
 
 For all available options, check module.nix or package.nix and the spicetify repo. Everything is optional and will revert to the defaults from spicetify.
 
